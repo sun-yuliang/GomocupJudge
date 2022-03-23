@@ -3,6 +3,12 @@ import re
 from concurrent.futures import ThreadPoolExecutor
 from queue import Queue
 
+# For opening analysis
+FirstMoveOffsetFrequency = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+Last1DistanceFrequency = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+Last2DistanceFrequency = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+MoveNumFrequency = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
 
 class ThreadPoolExecutorBounded(ThreadPoolExecutor):
 
@@ -100,5 +106,84 @@ def dict_2d_update(dic, key_a, key_b, val):
         dic.update({key_a: {key_b: val}})
 
 
+def parse_raw_opening(line):
+    line_split = line.split(",")
+    if len(line_split) <= 0 or len(line_split) % 2 == 1:
+        return False
+    x = 0
+    y = 0
+    cnt = 0
+    opening = []
+    for cord in line_split:
+        cnt += 1
+        if cnt % 2 == 0:
+            y = cord
+            opening.append([int(x), int(y)])
+        else:
+            x = cord
+    return opening
+
+
+def distance_between(cordX1, cordY1, cordX2, cordY2):
+    return max(abs(cordX1 - cordX2), abs(cordY1 - cordY2))
+
+
+def analyze_opening_helper(opening):
+    if (len(opening) <= 0):
+        return
+
+    d = distance_between(opening[0][0], opening[0][1], 0, 0)
+    FirstMoveOffsetFrequency[d] += 1
+
+    last1Move = [0, 0]
+    last2Move = [0, 0]
+    cnt = 0
+    for move in opening:
+        cnt += 1
+        if cnt > 1:
+            d = distance_between(move[0], move[1], last1Move[0], last1Move[1])
+            Last1DistanceFrequency[d] += 1
+        if cnt > 2:
+            d = distance_between(move[0], move[1], last2Move[0], last2Move[1])
+            Last2DistanceFrequency[d] += 1
+        if cnt > 1:
+            last2Move[0] = last1Move[0]
+            last2Move[1] = last1Move[1]
+        last1Move[0] = move[0]
+        last1Move[1] = move[1]
+
+    if cnt < len(MoveNumFrequency):
+        MoveNumFrequency[cnt] += 1
+
+
+def analyze_openings(opening_file):
+    fin = open(opening_file, "r")
+
+    while True:
+        # Read from file
+        reads = fin.readline()
+        if reads == None or len(reads) == 0:
+            break
+        line = parse_line_opening(reads)
+        if not line:
+            continue
+        opening = parse_raw_opening(line)
+
+        # Analyze the opening
+        analyze_opening_helper(opening)
+
+    fin.close()
+
+    # Print result
+    print("first move offset frequency")
+    print(FirstMoveOffsetFrequency)
+    print("last1 move distance frequency")
+    print(Last1DistanceFrequency)
+    print("last2 move distance frequency")
+    print(Last2DistanceFrequency)
+    print("move number frequency")
+    print(MoveNumFrequency)
+
+
 if __name__ == "__main__":
-    print(psq_to_psq([(18, 12, 36), (11, 11, 146), (18, 10, 72), (10, 10, 291)], 20))
+    analyze_openings("C:/Users/sunyu/gomoku/GomocupJudge/openings/openings_r.txt")

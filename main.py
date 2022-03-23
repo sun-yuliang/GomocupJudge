@@ -5,26 +5,47 @@ import prettytable
 import time
 
 WorkingDirectory = "C:/Users/sunyu/gomoku/GomocupJudge/bin/"
+OpeningFile = "C:/Users/sunyu/gomoku/GomocupJudge/openings/openings_s.txt"
 BinaryPrefix = "pbrain-"
 BinarySuffix = ".exe"
 
-MaxWorkers = 14
+BoardSize = 15
+Rule = 1
+
+# Workers recommandation for 5950x(64GB)
+# cpu test + cpu base    14
+# gpu test + cpu base    12
+# gpu test + gpu base    8
+#
+MaxWorkers = 12
 Mutex = Lock()
 
-BoardSize = 15
-Rule = 0
-
-WldDict = dict()
-ScoreDict = dict()
-
+# Computing power
+#
+# Gomocup 2021 server vs 5950x
+# With PentaZen21
+#              Gomocup    5950x       ratio
+# freestyle    875        1837        0.48
+# freestyle    977        2104        0.46
+# fastgame     893        1865        0.48
+# fastgame     957        2027        0.47
+# standard     764        2006        0.39
+# standard     657        2006        0.33
+# renju        930        2023        0.46
+# renju        684        2021        0.34
+# renju        885        2017        0.44
+#
 # AI list: binary name, timeout turn, timeout match, max memory, test/base
 AIs = [
     ["PentaZenNN", 1000 * 100, 86400000, 350000 * 1024 * 1024, "test"],
-    ["embryo21_f", 1 * 100, 86400000, 350 * 1024 * 1024, "base"],
-    ["rapfi21", 1 * 100, 86400000, 350 * 1024 * 1024, "base"],
-    ["PentaZen21_15", 1 * 100, 86400000, 350 * 1024 * 1024, "base"],
-    ["Yixin2018", 1 * 100, 86400000, 350 * 1024 * 1024, "base"],
+    ["embryo21_f", 10 * 100, 86400000, 350 * 1024 * 1024, "base"],
+    ["rapfi21", 10 * 100, 86400000, 350 * 1024 * 1024, "base"],
+    ["PentaZen21_15", 10 * 100, 86400000, 350 * 1024 * 1024, "base"],
+    ["Yixin2018", 10 * 100, 86400000, 350 * 1024 * 1024, "base"],
 ]
+
+WldDict = dict()
+ScoreDict = dict()
 
 
 # Setup of a game
@@ -162,7 +183,7 @@ def print_result():
 
 
 if __name__ == "__main__":
-    openings = read_opening(WorkingDirectory + "openings.txt", BoardSize)
+    openings = read_opening(OpeningFile, BoardSize)
     gameSetups = []
     opening_num = 0
 
