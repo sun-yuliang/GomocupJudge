@@ -220,6 +220,8 @@ class ai_match(object):
                 status = -4
             except Exception("MLE"):
                 status = -3
+            except Exception("FLE"):
+                status = -3
             except:
                 status = -3
 
@@ -272,6 +274,8 @@ class ai_match(object):
                 except Exception("TLE"):
                     status = -4
                 except Exception("MLE"):
+                    status = -3
+                except Exception("FLE"):
                     status = -3
                 except:
                     status = -3
@@ -327,12 +331,12 @@ class ai_match(object):
 def main():
     test = ai_match(board_size=20,
                     opening=[(10, 10)],
-                    cmd_1="C:/Users/sunyu/gomoku/GomocupJudge/bin/embryo21_f.exe",
-                    cmd_2="C:/Users/sunyu/gomoku/GomocupJudge/bin/embryo21_f.exe",
+                    cmd_1="C:/Users/sunyu/gomoku/GomocupJudge/bin/Yixin2018.exe",
+                    cmd_2="C:/Users/sunyu/gomoku/GomocupJudge/bin/Yixin2018.exe",
                     protocol_1="new",
                     protocol_2="new",
-                    timeout_turn_1=100,
-                    timeout_turn_2=100,
+                    timeout_turn_1=1000,
+                    timeout_turn_2=1000,
                     timeout_match_1=86400000,
                     timeout_match_2=86400000,
                     max_memory_1=350 * 1024 * 1024,

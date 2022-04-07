@@ -145,6 +145,8 @@ class new_protocol(object):
 
         if self.vms_memory > self.max_memory and self.max_memory != 0:
             raise Exception("MLE")
+        if get_dir_size(self.folder) > 70 * 1024 * 1024:
+            raise Exception("FLE")
 
         if special_rule == "":
             self.piece[len(self.piece) + 1] = (x, y)
@@ -193,7 +195,7 @@ class new_protocol(object):
 def main():
     engine = new_protocol(cmd="C:/Users/sunyu/gomoku/GomocupJudge/bin/Yixin2018.exe",
                           board=[[(0, 0) for i in range(20)] for j in range(20)],
-                          timeout_turn=3000,
+                          timeout_turn=1000,
                           timeout_match=86400000,
                           max_memory=350 * 1024 * 1024,
                           game_type=1,

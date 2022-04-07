@@ -4,7 +4,8 @@ from utility import *
 import prettytable
 import time
 
-WorkingDirectory = "C:/Users/sunyu/gomoku/GomocupJudge/bin/"
+WorkingDirectory = "C:/Users/sunyu/gomoku/GomocupJudge/bin_s/"
+Folder = "C:/Users/sunyu/gomoku/tmp/"
 OpeningFile = "C:/Users/sunyu/gomoku/GomocupJudge/openings/openings_s.txt"
 BinaryPrefix = "pbrain-"
 BinarySuffix = ".exe"
@@ -17,7 +18,7 @@ Rule = 1
 # gpu test + cpu base    12
 # gpu test + gpu base    8
 #
-MaxWorkers = 12
+MaxWorkers = 14
 Mutex = Lock()
 
 # Computing power
@@ -37,9 +38,11 @@ Mutex = Lock()
 #
 # AI list: binary name, timeout turn, timeout match, max memory, test/base
 AIs = [
-    ["PentaZenNN", 1000 * 100, 86400000, 350000 * 1024 * 1024, "test"],
-    ["embryo21_f", 10 * 100, 86400000, 350 * 1024 * 1024, "base"],
+    ["PentaZenNN", 10 * 100, 86400000, 350 * 1024 * 1024, "test"],
+    ["katagomo_s15", 10 * 100, 86400000, 350 * 1024 * 1024, "base"],
     ["rapfi21", 10 * 100, 86400000, 350 * 1024 * 1024, "base"],
+    ["embryo21_s", 10 * 100, 86400000, 350 * 1024 * 1024, "base"],
+    ["AlphaGomoku", 10 * 100, 86400000, 350 * 1024 * 1024, "base"],
     ["PentaZen21_15", 10 * 100, 86400000, 350 * 1024 * 1024, "base"],
     ["Yixin2018", 10 * 100, 86400000, 350 * 1024 * 1024, "base"],
 ]
@@ -99,8 +102,8 @@ def run_game(gameSetup):
                     max_memory_2=gameSetup.max_memory_2,
                     game_type=1,
                     rule=Rule,
-                    folder_1=WorkingDirectory,
-                    folder_2=WorkingDirectory,
+                    folder_1=Folder,
+                    folder_2=Folder,
                     working_dir_1=WorkingDirectory,
                     working_dir_2=WorkingDirectory,
                     tolerance=1000)

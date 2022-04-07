@@ -185,5 +185,20 @@ def analyze_openings(opening_file):
     print(MoveNumFrequency)
 
 
+def list_move_time():
+    left = 1000
+    for i in range(0, 112):
+        # t = left / 20
+        # t = 0.4 * left / pow(i + 10, 0.7)
+        t = 0.29 * left / pow(i + 12, 0.5)
+
+        left = left - t
+
+        min = int(t / 60)
+        sec = t - min * 60
+        print(i, "%dm%fs" % (min, sec))
+
+
 if __name__ == "__main__":
-    analyze_openings("C:/Users/sunyu/gomoku/GomocupJudge/openings/openings_r.txt")
+    # analyze_openings("C:/Users/sunyu/gomoku/GomocupJudge/openings/openings_r.txt")
+    list_move_time()

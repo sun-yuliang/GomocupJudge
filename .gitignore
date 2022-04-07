@@ -101,10 +101,7 @@ client/engine/*
 client/tmp/*
 temp
 
-bin
-out
-
-*out
-out*
+*bin*
+*out*
 
 openings
